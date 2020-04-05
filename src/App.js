@@ -6,6 +6,7 @@ import ControlPanel from './components/ControlPanel';
 import { dataLayer } from './data/map-style.js';
 import { updatePercentiles } from './helpers/update-percentiles';
 import { json as requestJson } from 'd3-request';
+import Tooltip from './components/Tooltip';
 
 export default class App extends Component {
   state = {
@@ -68,24 +69,8 @@ export default class App extends Component {
     this.setState({ hoveredFeature, x: offsetX, y: offsetY });
   };
 
-  _renderTooltip() {
-    const { hoveredFeature, x, y } = this.state;
-
-    return (
-      hoveredFeature && (
-        <StyledTooltip style={{ left: x, top: y }}>
-          <div>State: {hoveredFeature.properties.name}</div>
-          <div>Median Household Income: {hoveredFeature.properties.value}</div>
-          <div>
-            Percentile: {(hoveredFeature.properties.percentile / 8) * 100}
-          </div>
-        </StyledTooltip>
-      )
-    );
-  }
-
   render() {
-    const { viewport, data } = this.state;
+    const { viewport, data, hoveredFeature, x, y } = this.state;
 
     return (
       <div style={{ height: '100vh', position: 'relative' }}>
@@ -101,7 +86,9 @@ export default class App extends Component {
           <Source type='geojson' data={data}>
             <Layer {...dataLayer} />
           </Source>
-          {this._renderTooltip()}
+          {hoveredFeature && (
+            <Tooltip hoveredFeature={hoveredFeature} x={x} y={y} />
+          )}
         </MapGL>
 
         <ControlPanel
@@ -113,15 +100,3 @@ export default class App extends Component {
     );
   }
 }
-
-const StyledTooltip = styled.div`
-  position: absolute;
-  margin: 8px;
-  padding: 4px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  max-width: 300px;
-  font-size: 20px;
-  z-index: 9;
-  pointer-events: none;
-`;
