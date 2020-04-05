@@ -2,8 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 export default function Tooltip({ hoveredFeature, x, y }) {
-  console.log(hoveredFeature);
-
   return (
     <StyledTooltip style={{ left: x, top: y }}>
       <div>State: {hoveredFeature.properties.STATE_NAME}</div>
