@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MapGL, { Source, Layer } from 'react-map-gl';
+import styled from 'styled-components';
 
 import ControlPanel from './components/ControlPanel';
 import { dataLayer } from './data/map-style.js';
@@ -21,13 +22,14 @@ export default class App extends Component {
   };
 
   componentDidMount() {
-    requestJson('./data/australian-states.geojson', (error, response) => {
-      console.log(response);
-
-      if (!error) {
-        this._loadData(response);
+    requestJson(
+      'https://raw.githubusercontent.com/darcydev/interactive-geojson-mockup/master/src/data/australian-states.geojson',
+      (error, response) => {
+        if (!error) {
+          this._loadData(response);
+        }
       }
-    });
+    );
   }
 
   _loadData = (data) => {
@@ -71,13 +73,13 @@ export default class App extends Component {
 
     return (
       hoveredFeature && (
-        <div className='tooltip' style={{ left: x, top: y }}>
+        <StyledTooltip style={{ left: x, top: y }}>
           <div>State: {hoveredFeature.properties.name}</div>
           <div>Median Household Income: {hoveredFeature.properties.value}</div>
           <div>
             Percentile: {(hoveredFeature.properties.percentile / 8) * 100}
           </div>
-        </div>
+        </StyledTooltip>
       )
     );
   }
@@ -111,3 +113,15 @@ export default class App extends Component {
     );
   }
 }
+
+const StyledTooltip = styled.div`
+  position: absolute;
+  margin: 8px;
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  max-width: 300px;
+  font-size: 20px;
+  z-index: 9;
+  pointer-events: none;
+`;
