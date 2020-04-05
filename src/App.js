@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import MapGL, { Source, Layer } from 'react-map-gl';
-import styled from 'styled-components';
 
 import ControlPanel from './components/ControlPanel';
 import { dataLayer } from './data/map-style.js';

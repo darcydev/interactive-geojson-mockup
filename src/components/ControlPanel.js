@@ -18,7 +18,7 @@ export default class ControlPanel extends PureComponent {
 
         <div key={'year'} className='input'>
           <label>Year</label>
-          <input
+          <StyledInput
             type='range'
             value={settings.year}
             min={2000}
@@ -48,3 +48,5 @@ const StyledContainer = styled.div`
   outline: none;
   text-transform: uppercase;
 `;
+
+const StyledInput = styled.input``;
