@@ -1,7 +1,14 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { Slider } from 'antd';
+
+import RangeBar from './RangeBar';
 
 export default class ControlPanel extends PureComponent {
+  onSliderChange = (value) => {
+    this.props.onChange('year', value);
+  };
+
   render() {
     const { settings } = this.props;
 
@@ -15,17 +22,27 @@ export default class ControlPanel extends PureComponent {
           Hover over a state to see more details.
         </p>
         <hr />
-
-        <div key={'year'} className='input'>
-          <label>Year</label>
-          <StyledInput
-            type='range'
-            value={settings.year}
-            min={2000}
-            max={2019}
-            step={1}
-            onChange={(evt) => this.props.onChange('year', evt.target.value)}
-          />
+        <Slider
+          defaultValue={30}
+          tooltipVisible
+          value={settings.year}
+          min={2000}
+          max={2019}
+          step={1}
+          // onChange={(evt) => this.props.onChange('year', evt.target.value)}
+          onChange={this.onSliderChange}
+        />
+        <hr />
+        <div className='key'>
+          <RangeBar />
+          <div className='emojis'>
+            <span role='img' aria-label='dollar-emoji'>
+              💲
+            </span>
+            <span role='img' aria-label='dollar-emoji'>
+              💲💲💲
+            </span>
+          </div>
         </div>
       </StyledContainer>
     );
@@ -47,6 +64,18 @@ const StyledContainer = styled.div`
   color: #6b6b76;
   outline: none;
   text-transform: uppercase;
-`;
 
-const StyledInput = styled.input``;
+  .ant-slider {
+    padding: 35px 0;
+  }
+
+  .key {
+    padding: 20px 0;
+
+    .emojis {
+      padding: 5px 0 0 0;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+`;
